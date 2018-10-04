@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.licenses      = ['Apache-2.0']
   s.summary       = 'Okta System Log Input Plugin'
   s.description   = 'Logstash Plugin to pull Okta System Logs using HTTPS'
-  s.homepage      = 'www.kelsiem.com'
+  s.homepage      = 'https://www.kelsiem.com'
   s.authors       = ['Zak Siddiqui']
   s.email         = 'zak@kelsiem.com'
   s.require_paths = ['lib']
