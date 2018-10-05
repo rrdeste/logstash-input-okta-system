@@ -18,8 +18,6 @@ RUN \
 SHELL [ "/bin/bash", "-l", "-c" ]
 
 RUN \
-    # Set up RVM shell
-    source /usr/local/rvm/scripts/rvm && \
     # Install jruby
     rvm install jruby && \
     # Confirm
@@ -31,7 +29,6 @@ COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
 
-RUN \
-    source /usr/local/rvm/scripts/rvm && \
-    bundle install
+SHELL [ "/bin/bash" ]
+RUN bundle install
 
