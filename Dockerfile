@@ -15,7 +15,9 @@ RUN \
     # Set up RVM shell
     source /usr/local/rvm/scripts/rvm
 
+#above
 RUN \
+    /usr/local/rvm/scripts/rvm && \
     # Install jruby
     rvm install jruby && \
     # Confirm
