@@ -2,7 +2,7 @@ FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogsta
 
 
 RUN find / | egrep "\/bin\/gem$"
-RUN ls -la /usr/bin/gem
+RUN ls -la /etc/alternatives/gem
 
 
 RUN asdasdasd
