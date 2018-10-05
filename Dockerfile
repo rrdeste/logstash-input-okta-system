@@ -15,6 +15,7 @@ RUN \
     # Install RVM
     curl -sSL https://get.rvm.io | bash -s stable --ruby
 
+SHELL [ "/bin/bash", "-l", "-c" ]
 
 RUN \
     # Set up RVM shell
