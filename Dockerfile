@@ -21,7 +21,7 @@ RUN which rvm
 RUN \
     /usr/local/rvm/scripts/rvm && \
     # Install jruby
-    rvm install jruby && \
+    /usr/local/rvm/scripts/rvm install jruby && \
     # Confirm
     jruby -v
 
