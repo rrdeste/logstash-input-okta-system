@@ -2,13 +2,14 @@ FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogsta
 
 RUN yum install -y ruby
 # RUN gem install bundler
-RUN find / | egrep "\/bundle.?$"
+# RUN find / | egrep "\/bundle.?$"
 RUN mkdir -p /opt/okta_system_log
 COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
 RUN which bundle
-RUN bundle install
+# RUN bundle install
+RUN /usr/share/logstash/vendor/bundle/jruby/2.3.0/bin/bundler install
 
 
 
