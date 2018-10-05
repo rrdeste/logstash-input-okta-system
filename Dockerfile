@@ -15,7 +15,7 @@ RUN \
     # Install RVM
     curl -sSL https://get.rvm.io | bash -s stable --ruby
 
-SHELL [ "/bin/bash", "-l", "-c" ]
+# SHELL [ "/bin/bash", "-l", "-c" ]
 
 RUN \
     # Install jruby
@@ -23,7 +23,7 @@ RUN \
     # Confirm
     jruby -v
 
-SHELL [ "/bin/bash" ]
+# SHELL [ "/bin/bash" ]
 RUN mkdir -p /opt/okta_system_log
 COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
