@@ -15,6 +15,8 @@ RUN \
     # Set up RVM shell
     source /usr/local/rvm/scripts/rvm
 
+RUN find / | egrep \/rvm$
+RUN which rvm
 #above
 RUN \
     /usr/local/rvm/scripts/rvm && \
