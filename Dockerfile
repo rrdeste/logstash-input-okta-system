@@ -31,4 +31,4 @@ WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
 
 
-RUN bundle install
+CMD ["bundle","install"]
