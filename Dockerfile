@@ -2,6 +2,9 @@ FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogsta
 
 
 RUN find / | egrep "\/bin\/gem$"
+RUN ls -la /usr/bin/gem
+
+
 RUN asdasdasd
 RUN yum install -y ruby
 # RUN gem install bundler
