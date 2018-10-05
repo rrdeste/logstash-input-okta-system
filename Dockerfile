@@ -9,7 +9,7 @@ WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
 # RUN which bundle
 # RUN bundle install
-RUN /usr/share/logstash/vendor/bundle/jruby/2.3.0/bin/bundler install
+RUN /usr/share/logstash/vendor/bundle/jruby/2.3.0/bin/bundle install
 
 
 
