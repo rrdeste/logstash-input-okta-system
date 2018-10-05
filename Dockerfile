@@ -1,5 +1,7 @@
-#FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
-FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlinux
+FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
+
+### The following does not work
+# FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlinux
 
 ### TODO: Maybe we don't need a Logstash image above since bundle install appears to be doing something to install Logstash (not sure if it's the full Logstash or just the JRuby dependecies, not sure what is the minimum requirement), perhaps just start with normal Amazon Linux image
 
@@ -11,14 +13,16 @@ RUN \
     # Import key
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import - && \
     # Install RVM
-    curl -sSL https://get.rvm.io | bash -s stable --ruby && \
-    # Set up RVM shell
-    source /usr/local/rvm/scripts/rvm
+    curl -sSL https://get.rvm.io | bash -s stable --ruby
+
 
 RUN \
-    /usr/local/rvm/scripts/rvm && \
+    # Set up RVM shell
+    /bin/bash -c "source /usr/local/rvm/scripts/rvm"
+
+RUN \
     # Install jruby
-    /usr/local/rvm/scripts/rvm install jruby && \
+    rvm install jruby && \
     # Confirm
     jruby -v
 
