@@ -1,4 +1,5 @@
-FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
+#FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
+FROM amazonlinux
 
 ### TODO: Maybe we don't need a Logstash image above since bundle install appears to be doing something to install Logstash (not sure if it's the full Logstash or just the JRuby dependecies, not sure what is the minimum requirement), perhaps just start with normal Amazon Linux image
 
