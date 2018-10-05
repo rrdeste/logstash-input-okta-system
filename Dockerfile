@@ -1,7 +1,8 @@
 #FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
-FROM amazonlinux
+FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlinux
 
 ### TODO: Maybe we don't need a Logstash image above since bundle install appears to be doing something to install Logstash (not sure if it's the full Logstash or just the JRuby dependecies, not sure what is the minimum requirement), perhaps just start with normal Amazon Linux image
+
 
 # Install JRuby on Amazon Linux
 RUN \
@@ -12,7 +13,9 @@ RUN \
     # Install RVM
     curl -sSL https://get.rvm.io | bash -s stable --ruby && \
     # Set up RVM shell
-    source /usr/local/rvm/scripts/rvm && \
+    source /usr/local/rvm/scripts/rvm
+
+RUN \
     # Install jruby
     rvm install jruby && \
     # Confirm
