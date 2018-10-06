@@ -26,6 +26,8 @@ RUN \
     jruby -v
 
 RUN find / | egrep \/bin\/bundle$
+RUN ls -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/lib/ruby/gems/shared/bin/bundle /etc/bin/bundle && \
+    which bundle
 
 
 RUN mkdir -p /opt/okta_system_log
