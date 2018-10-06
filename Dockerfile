@@ -26,14 +26,15 @@ RUN \
     jruby -v
 
 RUN find / | egrep \/bin\/bundle$
-# RUN ln -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/lib/ruby/gems/shared/bin/bundle /usr/bin/bundle && \
-#    which bundle
+RUN ln -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/lib/ruby/gems/shared/bin/bundle /usr/bin/bundle && \
+   which bundle
 
 
 RUN mkdir -p /opt/okta_system_log
 COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
+
 
 SHELL [ "/bin/bash", "-l", "-c" ]
 RUN source /usr/local/rvm/scripts/rvm && ( jruby bundle install || echo ERROR)
