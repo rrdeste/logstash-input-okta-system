@@ -23,7 +23,7 @@ RUN \
     rvm install jruby && \
     # Confirm
     jruby -v
-
+RUN jruby -v
 
 
 RUN mkdir -p /opt/okta_system_log
