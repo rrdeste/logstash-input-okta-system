@@ -24,6 +24,9 @@ RUN \
     # Confirm
     jruby -v
 RUN rvm "jruby -v"
+
+RUN find / | egrep \/jruby$
+
 RUN jruby -v
 
 
