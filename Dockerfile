@@ -20,10 +20,12 @@ SHELL [ "/bin/bash", "-l", "-c" ]
 RUN \
     source /usr/local/rvm/scripts/rvm && \
     # Install jruby
-    rvm install jruby && \
+    rvm install "jruby-9.2.0.0-v" && \
     # Confirm
     jruby -v
 RUN rvm "jruby -v"
+RUN jruby -v
+
 
 RUN mkdir -p /opt/okta_system_log
 COPY /* /opt/okta_system_log/
