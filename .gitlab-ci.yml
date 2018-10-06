@@ -65,9 +65,9 @@ Build:
 Push image develop to Registry:
   stage: deploy
   script:
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
   only:
     - develop
@@ -77,9 +77,9 @@ Push image develop to Registry:
 Push image test to Registry:
   stage: deploy
   script:
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
   only:
     - test
@@ -90,9 +90,9 @@ Push image test to Registry:
 Push image latest to Registry:
   stage: deploy
   script:
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest
-    - sudo docker tag $IMAGE_NAME:latest 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
   only:
     - master
