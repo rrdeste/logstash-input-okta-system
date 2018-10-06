@@ -21,13 +21,11 @@ RUN \
     source /usr/local/rvm/scripts/rvm && \
     # Install jruby
     rvm install "jruby-9.2.0.0-v" && \
+    ln -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/bin/jruby /usr/bin/jruby && \
     # Confirm
     jruby -v
-RUN rvm "jruby -v"
 
-RUN find / | egrep \/jruby$
-RUN ln -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/bin/jruby /usr/bin/jruby
-RUN jruby -v
+RUN find / | egrep \/bin\/bundle$
 
 
 RUN mkdir -p /opt/okta_system_log
