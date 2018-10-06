@@ -38,5 +38,6 @@ RUN ls -la /opt/okta_system_log
 
 
 # SHELL [ "/bin/bash", "-l", "-c" ]
-RUN source /usr/local/rvm/scripts/rvm && ( bundle install || echo ERROR)
+# RUN source /usr/local/rvm/scripts/rvm && ( bundle install || echo ERROR)
+RUN ( bundle install || echo ERROR)
 
