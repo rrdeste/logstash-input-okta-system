@@ -1,4 +1,6 @@
-FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
+FROM jruby
+
+# FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlogstash
 
 ### The following does not work
 # FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/kelsiemlinux
@@ -35,7 +37,6 @@ WORKDIR /opt/okta_system_log
 RUN ls -la /opt/okta_system_log
 
 
-SHELL [ "/bin/bash", "-l", "-c" ]
-# RUN source /usr/local/rvm/scripts/rvm && ( bundle install || echo ERROR)
-RUN ( /usr/share/logstash/vendor/bundle/jruby/2.3.0/gems/bundler-1.9.10/bin/bundle install || echo ERROR)
+# SHELL [ "/bin/bash", "-l", "-c" ]
+RUN source /usr/local/rvm/scripts/rvm && ( bundle install || echo ERROR)
 
