@@ -26,7 +26,7 @@ RUN \
 RUN rvm "jruby -v"
 
 RUN find / | egrep \/jruby$
-
+RUN ln -s /usr/local/rvm/rubies/jruby-9.2.0.0-v/bin/jruby /usr/bin/jruby
 RUN jruby -v
 
 
