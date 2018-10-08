@@ -68,7 +68,7 @@ Build and Push Base Image:
 Build Develop:
   stage: build_test
   script:
-    - docker run -t $IMAGE_NAME:build  "ls -la /opt/okta_system_log"
+    - docker run -it $IMAGE_NAME:build  "ls -la /opt/okta_system_log"
 
 
 
