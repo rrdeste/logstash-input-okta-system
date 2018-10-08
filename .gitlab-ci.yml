@@ -46,7 +46,7 @@ Merge Request Test To Master:
 
 
 
-Build:
+Build Develop:
   stage: build_test
   script:
     # The following is for Amazon's registry
@@ -58,7 +58,7 @@ Build:
     - develop
 
 
-Build:
+Build Test:
   stage: build_test
   script:
     # The following is for Amazon's registry
@@ -71,7 +71,7 @@ Build:
 
 
 
-Build:
+Build Master:
   stage: build_test
   script:
     # The following is for Amazon's registry
