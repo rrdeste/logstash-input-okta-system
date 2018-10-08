@@ -92,8 +92,8 @@ Copy Test:
   stage: build_test
   script:
     - ls -la /opt/efs/plugins
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build "ls -laR /opt/efs"
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build "cp /opt/okta_system_log/*.gem /opt/efs/plugins/"
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build ls -laR /opt/efs/plugins
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build \cp /opt/okta_system_log/*.gem /opt/efs/plugins/
     - ls -la /opt/efs/plugins
   only:
     - test
