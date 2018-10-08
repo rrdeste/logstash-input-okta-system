@@ -93,7 +93,6 @@ Copy Test:
   script:
     - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build ls -la /opt/okta_system_log
     - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/*.gem /opt/efs/plugins/*.gem
   only:
     - test
 
