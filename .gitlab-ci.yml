@@ -53,7 +53,7 @@ Build Develop:
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
     # The following is for my registry
     - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
-    - sudo docker build -f 1-develop.Dockerfile -t $IMAGE_NAME:build
+    - sudo docker build -f 1-develop.Dockerfile -t $IMAGE_NAME:build .
   only:
     - develop
 
