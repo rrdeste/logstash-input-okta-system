@@ -92,7 +92,7 @@ Copy Test:
   stage: build_test
   script:
     - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build ls -la /opt/okta_system_log
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build \cp /opt/okta_system_log/*.gem /opt/efs/plugins/
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/*.gem /opt/efs/plugins/*
   only:
     - test
 
