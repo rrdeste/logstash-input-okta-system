@@ -1,4 +1,4 @@
-FROM 383707766587.dkr.ecr.ap-southeast-2.amazonaws.com/kelsiem.com/logstash-input-okta_system_log:base
+FROM jruby
 
 RUN find / | egrep \/bin\/bundle$
 

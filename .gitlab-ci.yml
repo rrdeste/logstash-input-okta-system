@@ -46,6 +46,25 @@ Merge Request Test To Master:
 
 
 
+Build and Push Base Image:
+  stage: build_test
+  script:
+    # The following is for Amazon's registry
+    - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+    # The following is for my registry
+    - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+    - sudo docker build -f 0-base.Dockerfile -t $IMAGE_NAME:base .
+
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:base
+    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:base || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:base
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+  when: manual
+  allow_failure: true
+
+
+
+
 Build Develop:
   stage: build_test
   script:
