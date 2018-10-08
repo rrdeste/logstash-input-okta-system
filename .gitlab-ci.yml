@@ -68,10 +68,6 @@ Build and Push Base Image:
 Build Develop:
   stage: build_test
   script:
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build "ls -la /opt/okta_system_log/*.gem*"
-
-
-
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
     # The following is for my registry
@@ -96,7 +92,7 @@ Copy Test:
   stage: build_test
   script:
     - ls -la /opt/efs/plugins
-    - docker run --rm $IMAGE_NAME:build -v /opt/efs/plugins "\cp /opt/okta_system_log/*.gem /opt/efs/plugins/"
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build "\cp /opt/okta_system_log/*.gem /opt/efs/plugins/"
     - ls -la /opt/efs/plugins
   only:
     - test
