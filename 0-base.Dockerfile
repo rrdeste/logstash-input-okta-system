@@ -14,3 +14,4 @@ RUN ls -la /opt/okta_system_log
 
 RUN bundle install
 
+RUN mkdir -p /opt/efs/plugins

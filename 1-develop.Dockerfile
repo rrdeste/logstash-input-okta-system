@@ -5,7 +5,7 @@ RUN find / | egrep \/bin\/bundle$
 
 
 RUN mkdir -p /opt/okta_system_log
-RUN mkdir -p /opt/efs/plugins
+
 
 COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
