@@ -4,4 +4,4 @@ RUN bundle exec rspec
 RUN gem build logstash-input-okta_system_log.gemspec
 
 WORKDIR /opt/okta_system_log
-COPY logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/logstash-input-okta_system_log-0.1.0-test.gem
+COPY ./logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/logstash-input-okta_system_log-0.1.0-test.gem
