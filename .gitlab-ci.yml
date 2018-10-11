@@ -91,8 +91,7 @@ Build Test:
 Copy Test:
   stage: build_test
   script:
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build ls -la /opt/okta_system_log
-    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/logstash-input-okta_system_log-0.1.0-test.gem
   only:
     - test
 
@@ -117,7 +116,7 @@ Build Master:
 Copy Master:
   stage: build_test
   script:
-    - docker run --rm $IMAGE_NAME:build -v /opt/efs/plugins "\cp /opt/okta_system_log/*.gem /opt/efs/plugins/"
+    - sudo docker run --rm -v /opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build /bin/cp -rf /opt/okta_system_log/logstash-input-okta_system_log-0.1.0.gem /opt/efs/plugins/logstash-input-okta_system_log-0.1.0.gem
   only:
     - master
 
