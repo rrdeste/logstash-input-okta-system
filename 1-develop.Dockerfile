@@ -13,3 +13,7 @@ RUN ls -la /opt/okta_system_log
 
 
 RUN bundle install
+
+RUN bundle exec rspec
+RUN gem build logstash-input-okta_system_log.gemspec
+
