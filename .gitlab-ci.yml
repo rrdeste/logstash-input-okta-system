@@ -140,4 +140,3 @@ Push image latest to Registry:
   only:
     - master
 
-
