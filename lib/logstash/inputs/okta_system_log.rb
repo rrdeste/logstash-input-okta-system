@@ -13,9 +13,89 @@ require "manticore"
 require "base64"
 require "cgi"
 
-# Generate a repeating message.
+MAX_AUTH_TOKEN_FILE_SIZE = 1 * 2**10
+
+
+
+# This Logstash input plugin allows you to call an the Okta HTTP API to ship to other SIEMS.
+# This plugin is based on the http_poller plugin, however the plugin needed to retain a state.
+# It should do that, and can be used as a basis for similar web api style loggers.
+# The plugin supports the rufus style scheduling.
+# Using the HTTP poller with custom a custom CA or self signed cert.
+# ==== Example
+# This is a basic configuration. The API key is passed through using an environment variable.
+# While it is possible to just put the API key directly into the file, it is NOT recommended.
 #
-# This plugin is intented only as an example.
+# [source,ruby]
+# ----------------------------------
+# input {
+#   okta_enterprise {
+#     schedule => { every => "30s" }
+#     chunk_size =>           1000
+#     auth_token_env  =>      "${OKTA_API_KEY}"
+#     url =>                  "https://uri.okta.com/api/v1/events"
+#   }
+# }
+# output {
+#   stdout {
+#     codec => rubydebug
+#   }
+# }
+# ----------------------------------
+# 
+# 
+# It is possible to save the application state, so if the plugin is stopped it won't have to pull 
+# all the data again.
+# Currently Linux ONLY.
+# The state file base is added to the config, which will be used store the state of the event query.
+# The directory in which the exists should have rwx permissions for the logstash user.
+# As such it should not be the primary logstash config directory.
+# 
+# [source,ruby]
+# ----------------------------------
+# input {
+#   okta_enterprise {
+#     schedule => { every => "30s" }
+#     state_file_base =>      "/etc/logstash/state_file/okta_base_"
+#     # A file can also be used instead of environment variable.
+#     auth_token_file  =>      "/path/to/security/creds"
+#     url =>                  "https://uri.okta.com/api/v1/events"
+#     # Metadata can be stored in the same way as the http_poller
+#     metadata_target =>      "metadata"
+#     # Data can be stored in any arbitrary key
+#     target =>               "target"
+#   }
+# }
+# 
+# output {
+#   stdout {
+#     codec => rubydebug
+#   }
+# }
+# ----------------------------------
+#
+# If you have a self signed cert you will need to convert your server's certificate to a valid# `.jks` or `.p12` file. An easy way to do it is to run the following one-liner, substituting your server's URL for the placeholder `MYURL` and `MYPORT`.
+#
+# [source,ruby]
+# ----------------------------------
+# openssl s_client -showcerts -connect MYURL:MYPORT </dev/null 2>/dev/null|openssl x509 -outform PEM > downloaded_cert.pem; keytool -import -alias test -file downloaded_cert.pem -keystore downloaded_truststore.jks
+# ----------------------------------
+#
+# The above snippet will create two files `downloaded_cert.pem` and `downloaded_truststore.jks`. You will be prompted to set a password for the `jks` file during this process. To configure logstash use a config like the one that follows.
+#
+#
+# [source,ruby]
+# ----------------------------------
+#input {
+#  okta_enterprise {
+#     ...
+#    truststore => "/path/to/downloaded_truststore.jks"
+#    truststore_password => "mypassword"
+#
+#  }
+#}
+# ----------------------------------
+
 
 class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
   include LogStash::PluginMixins::HttpClient
