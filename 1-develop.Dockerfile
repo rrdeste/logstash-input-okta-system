@@ -9,7 +9,7 @@ RUN mkdir -p /opt/okta_system_log
 
 COPY /* /opt/okta_system_log/
 WORKDIR /opt/okta_system_log
-RUN ls -lar /opt/okta_system_log
+RUN ls -laR /opt/okta_system_log
 
 
 RUN bundle install
@@ -18,4 +18,4 @@ RUN bundle exec rspec
 RUN gem build logstash-input-okta_system_log.gemspec
 
 RUN gem unpack logstash-input-okta_system_log-0.1.0.gem
-RUN ls -lar logstash-input-okta_system_log-0.1.0
+RUN ls -laR logstash-input-okta_system_log-0.1.0
