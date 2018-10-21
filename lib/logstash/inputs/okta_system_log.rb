@@ -270,7 +270,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
  
      params_event = Hash.new
      params_event[:limit] = @chunk_size if @chunk_size > 0
-     params_event[:startDate] = @start_date if @start_date
+     params_event[:since] = @start_date if @start_date
      params_event[:filter] = @filter if @filter
  
      if (!@url.to_s.include?('?') and params_event.count > 0)
