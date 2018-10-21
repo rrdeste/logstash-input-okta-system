@@ -315,7 +315,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
       @url = "#{@url}?" + params_event.to_a.map { |arr|"#{arr[0]}=#{arr[1]}" }.join('&')
     end
 
-    @logger.debug("Created initial URL to call", :url => @url)
+    @logger.info("Created initial URL to call", :url => @url)
     @host = Socket.gethostname
 
   end # def register
