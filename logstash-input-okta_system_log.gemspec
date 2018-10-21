@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib',"lib/logstash/inputs","spec/inputs"]
 
   # Files
-  s.files = Dir['lib/**/*','spec/**/*','lib/logstash/inputs/*','spec/inputs/*','vendor/**/*','*.gemspec','*.md','CONTRIBUTORS','Gemfile','LICENSE','NOTICE.TXT',"lib/logstash/inputs/okta_system_log.rb","spec/inputs/okta_system_log_spec.rb"]
+  s.files = Dir['lib/**/*','spec/**/*','vendor/**/*','*.gemspec','*.md','CONTRIBUTORS','Gemfile','LICENSE','NOTICE.TXT']
    # Tests
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
 
