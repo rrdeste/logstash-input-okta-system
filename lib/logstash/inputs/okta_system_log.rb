@@ -63,7 +63,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
   include LogStash::PluginMixins::HttpClient
   
   config_name "okta_system_log"
- 
+
    # If undefined, Logstash will complain, even if codec is unused.
    default :codec, "json"
  
