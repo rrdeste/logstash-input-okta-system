@@ -271,104 +271,104 @@ describe LogStash::Inputs::OktaSystemLog do
     end
 
     describe "a valid request and decoded response" do
-      let(:payload) {{"a" => 2, "hello" => ["a", "b", "c"]}}
-      let(:response_body) { LogStash::Json.dump(payload) }
-      let(:code) { 200 }
-      let(:url) { default_url }
+      # let(:payload) {{"a" => 2, "hello" => ["a", "b", "c"]}}
+      # let(:response_body) { LogStash::Json.dump(payload) }
+      # let(:code) { 200 }
+      # let(:url) { default_url }
 
-      let(:opts) { default_opts }
-      let(:instance) {
-        klass.new(opts)
-      }
+      # let(:opts) { default_opts }
+      # let(:instance) {
+      #   klass.new(opts)
+      # }
 
-      subject(:event) {
-        queue.pop(true)
-      }
+      # subject(:event) {
+      #   queue.pop(true)
+      # }
 
-      before do
-        instance.register
-        allow(instance).to receive(:decorate)
-        instance.client.stub(%r{#{url}.*}, 
-                             :body => response_body,
-                             :code => code
-        )
+      # before do
+      #   instance.register
+      #   allow(instance).to receive(:decorate)
+      #   instance.client.stub(%r{#{url}.*}, 
+      #                        :body => response_body,
+      #                        :code => code
+      #   )
 
-        instance.send(:run_once, queue)
-      end
+      #   instance.send(:run_once, queue)
+      # end
 
-      it "should have a matching message" do
-        expect(event.to_hash).to include(payload)
-      end
+      # it "should have a matching message" do
+      #   expect(event.to_hash).to include(payload)
+      # end
 
-      it "should decorate the event" do
-        expect(instance).to have_received(:decorate).once
-      end
+      # it "should decorate the event" do
+      #   expect(instance).to have_received(:decorate).once
+      # end
 
-      include_examples("matching metadata")
+      # include_examples("matching metadata")
       
-      context "with an empty body" do
-        let(:response_body) { "" }
-        it "should return an empty event" do
-          instance.send(:run_once, queue)
-          expect(event.get("[_http_poller_metadata][response_headers][content-length]")).to eql("0")
-        end
-      end
+      # context "with an empty body" do
+      #   let(:response_body) { "" }
+      #   it "should return an empty event" do
+      #     instance.send(:run_once, queue)
+      #     expect(event.get("[_http_poller_metadata][response_headers][content-length]")).to eql("0")
+      #   end
+      # end
 
-      context "with metadata omitted" do
-        let(:opts) {
-          opts = default_opts.clone
-          opts.delete("metadata_target")
-          opts
-        }
+      # context "with metadata omitted" do
+      #   let(:opts) {
+      #     opts = default_opts.clone
+      #     opts.delete("metadata_target")
+      #     opts
+      #   }
 
-        it "should not have any metadata on the event" do
-          instance.send(:run_once, queue)
-          expect(event.get(metadata_target)).to be_nil
-        end
-      end
+      #   it "should not have any metadata on the event" do
+      #     instance.send(:run_once, queue)
+      #     expect(event.get(metadata_target)).to be_nil
+      #   end
+      # end
 
-      context "with a specified target" do
-        let(:target) { "mytarget" }
-        let(:opts) { default_opts.merge("target" => target) }
+      # context "with a specified target" do
+      #   let(:target) { "mytarget" }
+      #   let(:opts) { default_opts.merge("target" => target) }
 
-        it "should store the event info in the target" do
-          # When events go through the pipeline they are java-ified
-          # this normalizes the payload to java types
-          payload_normalized = LogStash::Json.load(LogStash::Json.dump(payload))
-          expect(event.get(target)).to include(payload_normalized)
-        end
-      end
+      #   it "should store the event info in the target" do
+      #     # When events go through the pipeline they are java-ified
+      #     # this normalizes the payload to java types
+      #     payload_normalized = LogStash::Json.load(LogStash::Json.dump(payload))
+      #     expect(event.get(target)).to include(payload_normalized)
+      #   end
+      # end
 
-      context "with non-200 HTTP response codes" do
-        let(:code) { |example| example.metadata[:http_code] }
-        let(:response_body) { "{}" }
+      # context "with non-200 HTTP response codes" do
+      #   let(:code) { |example| example.metadata[:http_code] }
+      #   let(:response_body) { "{}" }
 
-        it "responds to a 500 code", :http_code => 500 do
-          instance.send(:run_once, queue)
-          expect(event.to_hash).to include({"HTTP-Code" => 500})
-          expect(event.get("tags")).to include('_okta_response_error')
-        end
-        it "responds to a 401/Unauthorized code", :http_code => 401 do
-          instance.send(:run_once, queue)
-          expect(event.to_hash).to include({"HTTP-Code" => 401})
-          expect(event.get("tags")).to include('_okta_response_error')
-        end
-        it "responds to a 400 code", :http_code => 400 do
-          instance.send(:run_once, queue)
-          expect(event.to_hash).to include({"HTTP-Code" => 400})
-          expect(event.get("tags")).to include('_okta_response_error')
-        end
-        context "specific okta errors" do
-          let(:payload) { {:okta_error => "E0000031" } }
-          let(:response_body) { LogStash::Json.dump(payload) }
+      #   it "responds to a 500 code", :http_code => 500 do
+      #     instance.send(:run_once, queue)
+      #     expect(event.to_hash).to include({"HTTP-Code" => 500})
+      #     expect(event.get("tags")).to include('_okta_response_error')
+      #   end
+      #   it "responds to a 401/Unauthorized code", :http_code => 401 do
+      #     instance.send(:run_once, queue)
+      #     expect(event.to_hash).to include({"HTTP-Code" => 401})
+      #     expect(event.get("tags")).to include('_okta_response_error')
+      #   end
+      #   it "responds to a 400 code", :http_code => 400 do
+      #     instance.send(:run_once, queue)
+      #     expect(event.to_hash).to include({"HTTP-Code" => 400})
+      #     expect(event.get("tags")).to include('_okta_response_error')
+      #   end
+      #   context "specific okta errors" do
+      #     let(:payload) { {:okta_error => "E0000031" } }
+      #     let(:response_body) { LogStash::Json.dump(payload) }
 
-          it "responds to a filter string error", :http_code => 400 do
-            expect(event.to_hash).to include({"HTTP-Code" => 400})
-            expect(event.to_hash).to include({"Okta-Plugin-Status" => "Filter string was not valid."})
-            expect(event.get("tags")).to include('_okta_response_error')
-          end
-        end
-      end
+      #     it "responds to a filter string error", :http_code => 400 do
+      #       expect(event.to_hash).to include({"HTTP-Code" => 400})
+      #       expect(event.to_hash).to include({"Okta-Plugin-Status" => "Filter string was not valid."})
+      #       expect(event.get("tags")).to include('_okta_response_error')
+      #     end
+      #   end
+      # end
     end
   end
 
