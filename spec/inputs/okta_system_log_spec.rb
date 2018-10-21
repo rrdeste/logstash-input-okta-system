@@ -171,7 +171,7 @@ describe LogStash::Inputs::OktaSystemLog do
         #T       0123456
         #events  x x x x
         #expects 3 events at T=5
-        sleep 5
+        sleep 10 # 5
         instance.stop
         runner.kill
         runner.join
