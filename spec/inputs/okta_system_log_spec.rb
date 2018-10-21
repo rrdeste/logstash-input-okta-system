@@ -127,7 +127,7 @@ describe LogStash::Inputs::OktaSystemLog do
       let(:instance) { klass.new(opts) }
       it "should run at the schedule" do
         Timecop.travel(Time.new(2000,1,1,0,0,0,'+00:00'))
-        Timecop.scale(121)
+        Timecop.scale(61) # was previously 60
         queue = Queue.new
         runner = Thread.new do
           instance.run(queue)
@@ -171,7 +171,7 @@ describe LogStash::Inputs::OktaSystemLog do
         #T       0123456
         #events  x x x x
         #expects 3 events at T=5
-        sleep 6
+        sleep 6 # was previously 5
         instance.stop
         runner.kill
         runner.join
