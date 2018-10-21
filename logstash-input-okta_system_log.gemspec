@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://www.kelsiem.com'
   s.authors       = ['Zak Siddiqui']
   s.email         = 'zak@kelsiem.com'
-  s.require_paths = ['lib']
+  s.require_paths = ['lib',"lib/logstash/inputs","spec/inputs"]
 
   # Files
-  s.files = Dir['lib/**/*','spec/**/*','lib/*/*/*','spec/*/*','vendor/**/*','*.gemspec','*.md','CONTRIBUTORS','Gemfile','LICENSE','NOTICE.TXT']
+  s.files = Dir['lib/**/*','spec/**/*','lib/logstash/inputs/*','spec/inputs/*','vendor/**/*','*.gemspec','*.md','CONTRIBUTORS','Gemfile','LICENSE','NOTICE.TXT']
    # Tests
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
 
