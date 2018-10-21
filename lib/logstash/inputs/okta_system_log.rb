@@ -359,7 +359,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
 
     begin
       while @continue and !stop?
-        @logger.debug("Calling URL",
+        @logger.info("Calling URL",
           :url => @url,
           :token_set => @auth_token.length > 0,
           :accept => accept,
@@ -464,11 +464,11 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
 
       if (Array(response.headers["link"]).count > 1)
         @continue = true
-        @logger.debug("Continue status", :continue => @continue  )
+        @logger.info("Continue status", :continue => @continue  )
       end
 
       @logger.info("Successful response returned", :code => response.code, :headers => response.headers)
-      @logger.debug("Response body", :body => response.body)
+      @logger.info("Response body", :body => response.body)
 
     when 401
       @codec.decode(response.body) do |decoded|
@@ -485,7 +485,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
       @logger.error("Authentication required, check auth_code",
         :code => response.code,
         :headers => response.headers)
-      @logger.debug("Authentication failed body", :body => response.body)
+      @logger.info("Authentication failed body", :body => response.body)
 
     when 400
       if (response.body.include?("E0000031"))
@@ -504,7 +504,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
           :okta_error => "E0000031",
           :filter_string => @filter)
 
-        @logger.debug("Filter string error response",
+        @logger.info("Filter string error response",
           :response_body => response.body,
           :response_headers => response.headers)
 
@@ -525,7 +525,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
           :okta_error => "E0000030",
           :date_string => @start_date)
 
-        @logger.debug("Start date error response",
+        @logger.info("Start date error response",
           :response_body => response.body,
           :response_headers => response.headers)
 
