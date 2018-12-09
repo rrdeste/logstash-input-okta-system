@@ -109,7 +109,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
   #
   # The default, `1000`, means to fetch 1000 events at a time.
   # Any value less than 1 will fetch all possible events.
-  config :chunk_size, :validate => :number, :default => 10
+  config :chunk_size, :validate => :number, :default => 1000
 
   # Schedule of when to periodically poll from the urls
   # Format: A hash with
