@@ -439,9 +439,13 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
       #end
 
       ## This feels like gross code
+      ## ZS attempting to fix
       Array(response.headers["link"]).each do |link_header|
         if link_header.end_with?('rel="next"')
-          @url = link_header.split(';')[0][1...-1]
+          # @url = link_header.split(';')[0][1...-1] # ZS removed
+          # ZS's fix:
+          @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
+          # ZS: still messy but hope this works!
         end
       end
 
