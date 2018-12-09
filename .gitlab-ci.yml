@@ -74,6 +74,7 @@ Build Develop:
     # The following is for my registry
     - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
     - sudo docker build -f 1-develop.Dockerfile -t $IMAGE_NAME:build .
+    - sudo docker run $IMAGE_NAME:build --volume=/opt/efs/plugins:/opt/efs/plugins \cp /opt/okta_system_log/*.gem /opt/efs/plugins
   only:
     - develop
 

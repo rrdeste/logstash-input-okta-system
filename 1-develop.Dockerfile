@@ -16,6 +16,8 @@ RUN bundle install
 
 RUN bundle exec rspec
 RUN gem build logstash-input-okta_system_log.gemspec
+RUN mkdir /opt/efs/plugins
+
 
 RUN gem unpack logstash-input-okta_system_log-0.1.0.gem
 RUN ls -laR logstash-input-okta_system_log-0.1.0
