@@ -8,14 +8,13 @@ variables:
 
 
 stages:
-  - build_test
-  - deploy
+  - Build
 
 
 
 
 Merge Request Feature to develop:
-  stage: build_test
+  stage: Build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"'$CI_COMMIT_REF_NAME'","target_branch":"develop","title":"merge '$CI_COMMIT_REF_NAME' to develop in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -25,7 +24,7 @@ Merge Request Feature to develop:
 
 
 Merge Request Develop to Test:
-  stage: build_test
+  stage: Build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"develop","target_branch":"test","title":"merge develop to test in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -35,7 +34,7 @@ Merge Request Develop to Test:
 
 
 Merge Request Test To Master:
-  stage: build_test
+  stage: Build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"test","target_branch":"master","title":"merge test to master in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -48,7 +47,7 @@ Merge Request Test To Master:
 
 
 Build and Push Base Image:
-  stage: build_test
+  stage: Build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
@@ -67,60 +66,42 @@ Build and Push Base Image:
 
 
 Build Develop:
-  stage: build_test
+  stage: Build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
     # The following is for my registry
     - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+
+    # Build
     - sudo docker build -f 1-develop.Dockerfile -t $IMAGE_NAME:build .
+
+    # Copy to EFS
     - sudo docker run --volume=/opt/efs/plugins:/opt/efs/plugins $IMAGE_NAME:build sh -c '\cp /opt/okta_system_log/*.gem /opt/efs/plugins' # FYI, /opt/efs/plugins is created in base image
+
+    # Push Develop
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
+    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
+    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
+
   only:
     - develop
 
 
 Build Test:
-  stage: build_test
+  stage: Build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+
     # The following is for my registry
     - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+
+    # Build
     - sudo docker build -f 2-test.Dockerfile -t $IMAGE_NAME:build .
-  only:
-    - test
 
-
-
-
-
-Build Master:
-  stage: build_test
-  script:
-    # The following is for Amazon's registry
-    - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
-    # The following is for my registry
-    - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
-    - sudo docker build -f 3-master.Dockerfile -t $IMAGE_NAME:build .
-  only:
-    - master
-
-
-Push image develop to Registry:
-  stage: deploy
-  script:
-    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
-    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:develop
-    - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
-    - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
-  only:
-    - develop
-
-
-
-Push image test to Registry:
-  stage: deploy
-  script:
+    # Push Test
     - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:test
     - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
@@ -131,9 +112,17 @@ Push image test to Registry:
 
 
 
-Push image latest to Registry:
-  stage: deploy
+
+Build Master:
+  stage: Build
   script:
+    # The following is for Amazon's registry
+    - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+    # The following is for my registry
+    - sudo $(sudo aws ecr get-login | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
+    - sudo docker build -f 3-master.Dockerfile -t $IMAGE_NAME:build .
+
+    # Push Latest
     - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest || sudo aws ecr create-repository --repository-name $IMAGE_NAME --region $Region; sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:latest
     - sudo docker tag $IMAGE_NAME:build 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
@@ -143,8 +132,10 @@ Push image latest to Registry:
 
 
 
+
+
 Push image latest to S3:
-  stage: deploy
+  stage: Build
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
     - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/$okta_system_log_GemFile
