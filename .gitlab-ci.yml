@@ -8,14 +8,14 @@ variables:
 
 
 stages:
-  - Build
-  - Deploy
+  - build
+  - deploy
 
 
 
 
 Merge Request Feature to develop:
-  stage: Build
+  stage: build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"'$CI_COMMIT_REF_NAME'","target_branch":"develop","title":"merge '$CI_COMMIT_REF_NAME' to develop in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -25,7 +25,7 @@ Merge Request Feature to develop:
 
 
 Merge Request Develop to Test:
-  stage: Build
+  stage: build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"develop","target_branch":"test","title":"merge develop to test in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -35,7 +35,7 @@ Merge Request Develop to Test:
 
 
 Merge Request Test To Master:
-  stage: Build
+  stage: build
   script:
     - echo CI_COMMIT_REF_NAME is $CI_COMMIT_REF_NAME
     - THIS_MERGE_ID=`curl -s -X POST 'https://gitlab.kelsiem.io/'$GITLAB_API_PATH'/projects/'$CI_PROJECT_ID'/merge_requests' -H "Content-Type:application/json" -H 'PRIVATE-TOKEN:'$GITLAB_TOKEN --data '{"source_branch":"test","target_branch":"master","title":"merge test to master in '$IMAGE_NAME'"}' | jq -r ".iid"`
@@ -48,7 +48,7 @@ Merge Request Test To Master:
 
 
 Build and Push Base Image:
-  stage: Build
+  stage: build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
@@ -67,7 +67,7 @@ Build and Push Base Image:
 
 
 Build Develop:
-  stage: Build
+  stage: build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
@@ -91,7 +91,7 @@ Build Develop:
 
 
 Build Test:
-  stage: Build
+  stage: build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
@@ -115,7 +115,7 @@ Build Test:
 
 
 Build Master:
-  stage: Build
+  stage: build
   script:
     # The following is for Amazon's registry
     - sudo $(sudo aws ecr get-login --region $Region --registry-ids 137112412989 | awk '{printf $1" "$2" "$3" "$4" "$5" "$6" "$9}')
@@ -148,7 +148,7 @@ Push image latest to S3:
 
 
 Push image latest to S3:
-  stage: Deploy
+  stage: deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
     - echo okta_system_log_GemFile=$okta_system_log_GemFile
@@ -160,7 +160,7 @@ Push image latest to S3:
 
 
 Push image latest to S3:
-  stage: Deploy
+  stage: deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
     - echo okta_system_log_GemFile=$okta_system_log_GemFile
