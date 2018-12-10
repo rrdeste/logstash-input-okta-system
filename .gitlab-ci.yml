@@ -9,6 +9,7 @@ variables:
 
 stages:
   - Build
+  - Deploy
 
 
 
@@ -135,7 +136,7 @@ Build Master:
 
 
 Push image latest to S3:
-  stage: Build
+  stage: Deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
     - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/$okta_system_log_GemFile
