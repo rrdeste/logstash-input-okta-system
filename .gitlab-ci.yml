@@ -136,7 +136,7 @@ Build Master:
 
 
 Push image latest to S3:
-  stage: Deploy
+  stage: deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
     - echo okta_system_log_GemFile=$okta_system_log_GemFile
