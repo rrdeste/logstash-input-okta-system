@@ -444,9 +444,10 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
         if link_header.end_with?('rel="next"')
           # @url = link_header.split(';')[0][1...-1] # ZS removed
           # ZS's fix:
-          @logger.info("Next URL Details",
+          @logger.debug("Next URL Details",
             :link_header => link_header,
             :link_header_splitsplit => link_header.split(";")[1])
+            # ZS: Change above debug to info if required to debug during testing
           begin
             # this works if the URL has a "self" and a "next" section
             @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
@@ -480,8 +481,9 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
       #   @logger.info("Continue status", :continue => @continue  )
       # end
 
-      @logger.info("Successful response returned", :code => response.code, :headers => response.headers)
-      @logger.info("Response body", :body => response.body)
+      # ZS: Change below debug to info if required to debug during testing
+      @logger.debug("Successful response returned", :code => response.code, :headers => response.headers)
+      @logger.debug("Response body", :body => response.body)
 
     when 401
       @codec.decode(response.body) do |decoded|
