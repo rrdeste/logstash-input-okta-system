@@ -359,7 +359,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
 
     begin
       while @continue and !stop?
-        @logger.info("Calling URL",
+        @logger.debug("Calling URL",
           :url => @url,
           :token_set => @auth_token.length > 0,
           :accept => accept,
@@ -454,6 +454,8 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
           rescue
             # this works if the URL has a "next" section only
             @url = link_header.split(";")[0].strip().sub("<","").sub(">","")
+            @logger.info("Starting URL", :URL => @url)
+
           end
           # ZS: still messy but hope this works!
         end
