@@ -167,4 +167,3 @@ Push image latest to S3:
     - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/master/
   only:
     - master
-
