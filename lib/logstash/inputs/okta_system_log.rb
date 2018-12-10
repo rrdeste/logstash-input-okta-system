@@ -451,11 +451,10 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
           begin
             # this works if the URL has a "self" and a "next" section
             @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
+            @logger.info("Starting URL", :URL => @url)
           rescue
             # this works if the URL has a "next" section only
             @url = link_header.split(";")[0].strip().sub("<","").sub(">","")
-            @logger.info("Starting URL", :URL => @url)
-
           end
           # ZS: still messy but hope this works!
         end
