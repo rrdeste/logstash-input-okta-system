@@ -135,7 +135,7 @@ Build Master:
 
 
 
-Push image latest to S3:
+Push image develop to S3:
   stage: deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
@@ -147,7 +147,7 @@ Push image latest to S3:
 
 
 
-Push image latest to S3:
+Push image test to S3:
   stage: deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
