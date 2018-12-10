@@ -474,11 +474,11 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
         end
       end
 
-
-      if (Array(response.headers["link"]).count > 1)
-        @continue = true
-        @logger.info("Continue status", :continue => @continue  )
-      end
+      # ZS: disable this because there is always a link header it seems
+      # if (Array(response.headers["link"]).count > 1)
+      #   @continue = true
+      #   @logger.info("Continue status", :continue => @continue  )
+      # end
 
       @logger.info("Successful response returned", :code => response.code, :headers => response.headers)
       @logger.info("Response body", :body => response.body)
