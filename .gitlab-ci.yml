@@ -140,3 +140,14 @@ Push image latest to Registry:
     - sudo docker push 383707766587.dkr.ecr.$Region.amazonaws.com/$IMAGE_NAME:Pipeline_$CI_PIPELINE_ID
   only:
     - master
+
+
+
+Push image latest to S3:
+  stage: deploy
+  script:
+    - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
+    - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/$okta_system_log_GemFile
+  only:
+    - master
+
