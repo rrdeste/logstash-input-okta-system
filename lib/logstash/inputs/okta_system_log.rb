@@ -446,8 +446,14 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
           # ZS's fix:
           @logger.info("Next URL Details",
             :link_header => link_header,
-            :link_header_splitsplit => link_header.split(";")[1].split(",")[1])
-          @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
+            :link_header_splitsplit => link_header.split(";")[1])
+          begin
+            # this works if the URL has a "self" and a "next" section
+            @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
+          rescue
+            # this works if the URL has a "next" section only
+            @url = link_header.split(";")[0].strip().sub("<","").sub(">","")
+          end
           # ZS: still messy but hope this works!
         end
       end
