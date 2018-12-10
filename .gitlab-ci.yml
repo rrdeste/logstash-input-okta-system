@@ -161,7 +161,8 @@ Push image latest to S3:
   stage: Deploy
   script:
     - okta_system_log_GemFile=`ls -rt /opt/efs/plugins/logstash-input-okta_system_log-*.gem | tail -n 1`
-    - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/master/$okta_system_log_GemFile
+    - echo okta_system_log_GemFile=$okta_system_log_GemFile
+    - sudo aws s3 cp $okta_system_log_GemFile s3://kelsiem-io-config/logstash-plugins/master/
   only:
     - master
 
