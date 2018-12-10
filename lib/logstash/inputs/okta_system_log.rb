@@ -444,6 +444,9 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
         if link_header.end_with?('rel="next"')
           # @url = link_header.split(';')[0][1...-1] # ZS removed
           # ZS's fix:
+          @logger.info("Next URL Details",
+            :link_header => link_header,
+            :link_header_splitsplit => link_header.split(";")[1].split(",")[1])
           @url = link_header.split(";")[1].split(",")[1].strip().sub("<","").sub(">","")
           # ZS: still messy but hope this works!
         end
