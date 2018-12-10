@@ -614,7 +614,7 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
 
     event.set(@metadata_target,m)
 
-    @logger.info("Event", :event => event)
+    @logger.debug("Event", :event => event)
 
   end
 
