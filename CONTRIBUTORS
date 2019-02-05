@@ -2,8 +2,8 @@ The following is a list of people who have contributed ideas, code, bug
 reports, or in general have helped logstash along its way.
 
 Contributors:
-* Z. Siddiqui
-* With inspiriation from https://github.com/p-b-- at https://github.com/SecurityRiskAdvisors/logstash-input-okta_enterprise
+* Z. Siddiqui (GitHub:zaakiy)
+* With inspiration from https://github.com/p-b-- at https://github.com/SecurityRiskAdvisors/logstash-input-okta_enterprise
 
 Note: If you've sent us patches, bug reports, or otherwise contributed to
 Logstash, and you aren't on the list above and want to be, please let us know
