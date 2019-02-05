@@ -407,39 +407,6 @@ class LogStash::Inputs::OktaSystemLog < LogStash::Inputs::Base
 
     case response.code
     when 200
-      ## Some benchmarking code for reasonings behind the methods.
-      ## They aren't great benchmarks, but basic ones that proved a point.
-      ## If anyone has better/contradicting results let me know
-      #
-      ## Some system info on which these tests were run:
-      #$ cat /proc/cpuinfo | grep -i "model name" | uniq -c
-      #       4 model name      : Intel(R) Core(TM) i7-3740QM CPU @ 2.70GHz
-      #
-      #$ free -m
-      #              total        used        free      shared  buff/cache   available
-      #              Mem:           1984         925         372           8         686         833
-      #              Swap:          2047           0        2047
-      #
-      #str = '<https://dev-instance.oktapreview.com/api/v1/events?after=tevHLxinRbATJeKgKjgXGXy0Q1479278142000&limit=1000>; rel="next"'
-      #require "benchmark"
-      #
-      #
-      #n = 50000000
-      #
-      #
-      #Benchmark.bm do |x|
-      #  x.report { n.times { str.include?('rel="next"') } } # (2) 23.008853sec @50000000 times
-      #  x.report { n.times { str.end_with?('rel="next"') } } # (1) 16.894623sec @50000000 times
-      #  x.report { n.times { str =~ /rel="next"$/ } } # (3) 30.757554sec @50000000 times
-      #end
-      #
-      #Benchmark.bm do |x|
-      #  x.report { n.times { str.match(/<([^>]+)>/).captures[0] } } # (2) 262.166085sec @50000000 times
-      #  x.report { n.times { str.split(';')[0][1...-1] } } # (1) 31.673270sec @50000000 times
-      #end
-
-      ## This feels like gross code
-      ## ZS attempting to fix
       Array(response.headers["link"]).each do |link_header|
         if link_header.end_with?('rel="next"')
           # @url = link_header.split(';')[0][1...-1] # ZS removed
